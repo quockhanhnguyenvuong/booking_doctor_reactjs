@@ -4,8 +4,8 @@ import { push } from "connected-react-router";
 import * as actions from "../../store/actions";
 import "./Login.scss";
 import { handleLoginApi } from "../../services/userService";
-import ModalRegister from "./ModalRegister";
-import ModalForgotPassword from "./ModalForgotPassword";
+import { handleLoginGmail } from '../../services/userService';
+import GoogleLogin from 'react-google-login';
 
 class Login extends Component {
   constructor(props) {
@@ -15,9 +15,6 @@ class Login extends Component {
       password: "",
       isShowPassword: false,
       errMessage: "",
-
-      isOpenModalRegister: false,
-      isOpenModalForgotPassword: false,
     };
   }
 
@@ -76,65 +73,58 @@ class Login extends Component {
     }
   };
 
-  //modal đăng kí
-  handleAddNewUser = () => {
-    this.setState({
-      isOpenModalRegister: true,
-    });
-  };
-  handleForgotPasswor = () => {
-    this.setState({
-      isOpenModalForgotPassword: true,
-    });
-  };
-
-  toggleModal = () => {
-    this.setState({
-      isOpenModalRegister: !this.state.isOpenModalRegister,
-    });
-  };
-  toggleModalForgotPassword = () => {
-    this.setState({
-      isOpenModalForgotPassword: !this.state.isOpenModalForgotPassword,
-    });
-  };
+  responseGoogle = async(da) => {
+    let data = await handleLoginGmail(this.state.username, this.state.password);
+    this.props.userLoginSuccess(data.user);
+    console.log("login succeeds");
+    // try {
+    //   let data = await handleLoginGmail(this.state.username, this.state.password);
+    //   if (data && data.errCode !== 0) {
+    //     this.setState({
+    //       errMessage: data.message,
+    //     });
+    //   }
+    //   if (data && data.errCode === 0) {
+    //     this.props.userLoginSuccess(data.user);
+    //     console.log("login succeeds");
+    //   }
+    // } catch (e) {
+    //   if (e.response) {
+    //     if (e.response.data) {
+    //       this.setState({
+    //         errMessage: e.response.data.message,
+    //       });
+    //     }
+    //   }
+    // }
+}
+  handleForgotPassword = () =>{
+    window.location = "http://localhost:3000/forget-password"
+  }
 
   render() {
     return (
       <div className="login-backgroud">
-        <ModalRegister
-          isOpen={this.state.isOpenModalRegister}
-          toggleFromParent={this.toggleModal}
-        />
-        <ModalForgotPassword
-          isOpen={this.state.isOpenModalForgotPassword}
-          toggleFromParent={this.toggleModalForgotPassword}
-        />
         <div className="login-container">
-          <div className="btn ">
-            <a href="/" className="btn-home">
-              <i class="fas fa-home"></i>
-            </a>
-          </div>
           <div className="login-content">
-            <div className=" text-login">Đăng nhập</div>
-            <div className=" form-group">
-              <label>Tên đăng nhập:</label>
+            <div className="col-12 text-login">Login</div>
+            <div className="col-12 form-group">
+              <label>Username:</label>
               <input
                 type="text"
                 className="form-control"
-                placeholder="Nhâp tên đăng nhập"
+                placeholder="Enter your username"
                 value={this.state.username}
                 onChange={(event) => this.handleOnChangeUsername(event)}
               />
             </div>
-            <div className=" form-group">
-              <label>Mật khẩu:</label>
+            <div className="col-12 form-group">
+              <label>Password:</label>
               <div className="custom-input-password">
                 <input
                   className="form-control"
                   type={this.state.isShowPassword ? "text" : "password"}
-                  placeholder="Nhập mật khẩu"
+                  placeholder="Enter your password"
                   onChange={(event) => {
                     this.handleOnChangePassword(event);
                   }}
@@ -158,37 +148,37 @@ class Login extends Component {
                 </span>
               </div>
             </div>
-            <div style={{ color: "red" }}>{this.state.errMessage}</div>
-            <div className="">
+            <div className="col-12" style={{ color: "red" }}>
+              {this.state.errMessage}
+            </div>
+            <div className="col-12">
               <button
                 className="btn-login"
                 onClick={() => {
                   this.handleLogin();
                 }}
               >
-                Đăng nhập
+                Log In
               </button>
             </div>
-            <div className="">
-              <span
-                className="forget-password "
-                onClick={() => this.handleForgotPasswor()}
-              >
-                Quên mật khẩu?
-              </span>
-              <span
-                className="forget-password mx-0"
-                onClick={() => this.handleAddNewUser()}
-              >
-                Đăng ký?
-              </span>
+            <div className="col-12">
+              <button className='forget-password'
+                  onClick={() => this.handleForgotPassword()}>Forgot your password?
+              </button>
             </div>
-
-            <div className="text-center mt-3">
-              <span className="text-other-login">hoặc:</span>
+            <div className="col-12 text-center mt-3">
+              <span className="text-other-login">Or Login With:</span>
             </div>
-            <div className=" social-login">
-              <i className="fab fa-google-plus-g google"></i>
+            <div className="col-12 social-login">
+              <GoogleLogin
+                  className="GoogleLogin" 
+                  clientId="677626076955-qfb1rsbrm6ijlue1cgd3cut5sav6426d.apps.googleusercontent.com"
+                  buttonText="Google"
+                  icon={true}
+                  onSuccess={this.responseGoogle}
+                  onFailure={this.responseGoogle}
+                  cookiePolicy={'single_host_origin'}
+              />
             </div>
           </div>
         </div>
@@ -198,7 +188,9 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    lang: state.app.language,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
