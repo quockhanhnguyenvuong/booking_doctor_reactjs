@@ -11,11 +11,13 @@ import {
 import { path } from "../utils";
 import Home from "../routes/Home";
 import Login from "./Auth/Login";
-// import Header from "./Header/Header";
+import Header from "./Header/Header";
 import System from "../routes/System";
 import HomePage from "./HomePage/HomePage.js";
 import CustomScrollbars from "../components/CustomScrollbars.js";
-i;
+import Doctor from "../routes/Doctor";
+import VerifyEmail from '../Patient/VerifyEmail';
+import forgetPassword from './Auth/forgetPassword';
 
 class App extends Component {
   handlePersistorState = () => {
@@ -41,7 +43,7 @@ class App extends Component {
       <Fragment>
         <Router history={history}>
           <div className="main-container">
-            {this.props.isLoggedIn}
+            {this.props.isLoggedIn && <Header />}
 
             <div className="content-container">
               <CustomScrollbars style={{ height: "100vh", width: "100%" }}>
@@ -55,8 +57,15 @@ class App extends Component {
                     path={path.SYSTEM}
                     component={userIsAuthenticated(System)}
                   />
-
+                  <Route
+                    path={"/doctor/"}
+                    component={userIsAuthenticated(Doctor)}
+                  />
                   <Route path={path.HOMEPAGE} component={HomePage} />
+                  //Còn vài route ở trên.
+                  /* route của detail*/
+                  <Route path={path.VERIFY_EMAIL_BOOKING} component={VerifyEmail} />
+                  <Route path={path.FORGET_PASSWORD} component={forgetPassword}/>
                 </Switch>
               </CustomScrollbars>
             </div>
@@ -64,7 +73,7 @@ class App extends Component {
             {/* react-toastify */}
             <ToastContainer
               position="bottom-right"
-              autoClose={2000}
+              autoClose={3000}
               hideProgressBar={false}
               newestOnTop={false}
               closeOnClick
