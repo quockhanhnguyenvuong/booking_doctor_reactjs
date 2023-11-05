@@ -8,6 +8,9 @@ export const path = {
   DETAIL_SPECIALTY: "/detail-specialty/:id",
   VERIFY_EMAIL_BOOKING: "/verify-booking/",
   DETAIL_CLINIC: "/detail-clinic/:id",
+  /*DETAIL_DOCTOR.... */
+  VERIFY_EMAIL_BOOKING: '/verify-booking/',
+  FORGET_PASSWORD: '/forget-password',
 };
 
 export const manageActions = {

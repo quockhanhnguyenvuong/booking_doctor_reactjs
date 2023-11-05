@@ -8,4 +8,8 @@ const getAllUsers = (inputId) => {
   return axios.get(`/api/get-all-users?id=${inputId}`, { id: inputId });
 };
 
-export { handleLoginApi, getAllUsers };
+const postVerifyBookAppointment = (data) =>{
+  return axios.post('/api/verify-book-appointment', data)
+};
+
+export { handleLoginApi, getAllUsers, postVerifyBookAppointment };
