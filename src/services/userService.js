@@ -12,4 +12,19 @@ const postVerifyBookAppointment = (data) =>{
   return axios.post('/api/verify-book-appointment', data)
 };
 
-export { handleLoginApi, getAllUsers, postVerifyBookAppointment };
+const postSendRemedy = (data) => {
+  return axios.post(`/api/send-remedy`, data);
+};
+
+const getConfirm = (data) => {
+  return axios.post(`/api/get-confirm`, data);
+};
+
+const postSendRefuse = (data) => {
+  return axios.post(`/api/send-refuse`, data);
+};
+
+const postPatientBookAppointment = (data) => {
+  return axios.post("/api/patient-book-appointment", data);
+};
+export { postSendRemedy, getConfirm, postSendRefuse, postPatientBookAppointment,  handleLoginApi, getAllUsers, postVerifyBookAppointment };
