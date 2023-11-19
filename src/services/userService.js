@@ -27,4 +27,13 @@ const postSendRefuse = (data) => {
 const postPatientBookAppointment = (data) => {
   return axios.post("/api/patient-book-appointment", data);
 };
-export { postSendRemedy, getConfirm, postSendRefuse, postPatientBookAppointment,  handleLoginApi, getAllUsers, postVerifyBookAppointment };
+
+const checkAccount = (data) => {
+  return axios.post("/api/check-email", data);
+};
+
+const handleResetPassword = (data) => {
+  return axios.post("/api/check-OTP-reset-Password", data);
+};
+export { postSendRemedy, getConfirm, postSendRefuse, postPatientBookAppointment,  handleLoginApi, getAllUsers, postVerifyBookAppointment, checkAccount,
+  handleResetPassword };

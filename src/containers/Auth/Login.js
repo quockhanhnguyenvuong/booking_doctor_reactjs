@@ -82,7 +82,9 @@ class Login extends Component {
     
 }
   handleForgotPassword = () =>{
-    window.location = "http://localhost:3000/forget-password"
+    this.setState({
+      isOpenModalForgotPassword: true,
+    });
   }
   
   //modal register
@@ -167,9 +169,9 @@ class Login extends Component {
                 <span style={{marginLeft: '3px', fontSize: '15px'}}>Remember</span>
               </span>
               {/*  quên mk */}
-              <button className='forget-password'
-                  onClick={() => this.handleForgotPassword()}>Forgot your password?
-              </button>
+              <span onClick={() => this.handleForgotPassword()}>
+                Quên mật khẩu?
+              </span>
             </div>
             <div className="col-12 text-center mt-3">
               <span className="text-other-login">Or Login With:</span>
